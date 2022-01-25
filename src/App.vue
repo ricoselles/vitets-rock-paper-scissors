@@ -5,16 +5,21 @@ import Register from './components/Register.vue';
 </script>
 
 <template>
-  <Register />
-</template>
+  <div
+    class="
+      min-h-full
+      flex flex-col
+      items-center
+      justify-center
+      py-12
+      px-4
+      space-y-8
+    "
+  >
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      Step 1. Register
+    </h2>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+    <Register />
+  </div>
+</template>
