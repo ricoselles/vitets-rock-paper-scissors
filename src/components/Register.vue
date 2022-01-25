@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+const emits = defineEmits('xxx');
 const name = ref(null);
 
 async function submit() {
@@ -16,7 +17,12 @@ async function submit() {
       }
     );
 
-    console.log(await response.json());
+    const result = await response;
+    const body = await result.json();
+
+    if (result.ok) {
+      emits('xxx', body.id);
+    }
   } catch (e) {
     console.error(e);
   }
@@ -24,7 +30,7 @@ async function submit() {
 </script>
 
 <template>
-  <form class="max-w-md w-full space-y-8" @submit="submit">
+  <form class="max-w-md w-full space-y-8" @submit.prevent="submit">
     <div>
       <label class="block text-left text-sm font-bold text-gray-700"
         >Name</label
