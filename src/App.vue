@@ -1,10 +1,25 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+import { ref } from 'vue';
 import Register from './components/Register.vue';
+import Start from './components/Start.vue';
+import Play from './components/Play.vue';
+import Title from './components/Title.vue';
 
-const onRegistered = (id) => {
-  console.log('onRegistered', id);
+const playerId: string = ref(null);
+const gameId: string = ref(null);
+
+const onRegistered = (id: string) => {
+  playerId.value = id;
+};
+
+const onStarted = (id: string) => {
+  gameId.value = id;
+};
+
+const onPlayed = () => {};
+
+const onReset = () => {
+  gameId.value = null;
 };
 </script>
 
@@ -20,10 +35,21 @@ const onRegistered = (id) => {
       space-y-8
     "
   >
-    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-      Step 1. Register
-    </h2>
+    <Title> Step 1. Register </Title>
 
     <Register @registered="onRegistered" />
+
+    <Title> Step 2. Start Game </Title>
+
+    <Start :player-id="playerId" @started="onStarted" />
+
+    <Title> Step 3. Play Game </Title>
+
+    <Play
+      :playerId="playerId"
+      :gameId="gameId"
+      @played="onPlayed"
+      @reset="onReset"
+    />
   </div>
 </template>

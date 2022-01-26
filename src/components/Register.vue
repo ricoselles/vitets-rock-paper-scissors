@@ -1,32 +1,35 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useClient } from '../composables/client';
+import { useLocalStorage } from '../composables/localStorage';
+import Button from './Button.vue';
 
-const emits = defineEmits('registered');
+const emits = defineEmits(['registered']);
 const name = ref(null);
+const localStorageKey = '__player__';
 
-async function submit() {
-  try {
-    const response = await fetch(
-      'https://apim-netivity-trendwatch-prod-euwe.azure-api.net/RegisterPlayer',
-      {
-        method: 'POST',
-        body: JSON.stringify({ name: name.value }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+const notify = (playerId: string) => {
+  emits('registered', playerId);
+};
 
-    const result = await response;
-    const body = await result.json();
+const submit = async () => {
+  const response = await useClient().registerPlayer(name.value);
 
-    if (result.ok) {
-      emits('registered', body.id);
-    }
-  } catch (e) {
-    console.error(e);
+  useLocalStorage().setItem(localStorageKey, {
+    name: name.value,
+    playerId: response.id,
+  });
+
+  notify(response.id);
+};
+
+onMounted(() => {
+  const data = useLocalStorage().getItem(localStorageKey);
+  if (data && 'playerId' in data && 'name' in data) {
+    name.value = data.name;
+    notify(data.playerId);
   }
-}
+});
 </script>
 
 <template>
@@ -51,30 +54,6 @@ async function submit() {
       />
     </div>
 
-    <button
-      type="submit"
-      class="
-        group
-        relative
-        w-full
-        flex
-        justify-center
-        py-4
-        px-8
-        border border-transparent
-        text-base
-        font-medium
-        rounded-md
-        text-white
-        bg-indigo-600
-        hover:bg-indigo-700
-        focus:outline-none
-        focus:ring-2
-        focus:ring-offset-2
-        focus:ring-indigo-500
-      "
-    >
-      Register
-    </button>
+    <Button> Register </Button>
   </form>
 </template>
