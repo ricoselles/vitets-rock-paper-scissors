@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const emits = defineEmits('xxx');
+const emits = defineEmits('registered');
 const name = ref(null);
 
 async function submit() {
@@ -21,7 +21,7 @@ async function submit() {
     const body = await result.json();
 
     if (result.ok) {
-      emits('xxx', body.id);
+      emits('registered', body.id);
     }
   } catch (e) {
     console.error(e);
