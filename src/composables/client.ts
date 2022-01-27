@@ -14,6 +14,10 @@ export function useClient(
   baseUrl: string = 'https://apim-netivity-trendwatch-prod-euwe.azure-api.net'
 ) {
   return {
+    getPlayers(): Promise<{ name: string; score: number }[] | null> {
+      return get(baseUrl, '/GetPlayers');
+    },
+
     playRound(
       gameId: string,
       playerId: string,

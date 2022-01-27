@@ -4,6 +4,7 @@ import Register from './components/Register.vue';
 import Start from './components/Start.vue';
 import Play from './components/Play.vue';
 import Title from './components/Title.vue';
+import Players from './components/Players.vue';
 
 const playerId: string = ref(null);
 const gameId: string = ref(null);
@@ -51,5 +52,9 @@ const onReset = () => {
       @played="onPlayed"
       @reset="onReset"
     />
+
+    <Title> Currently Playing </Title>
+
+    <Players />
   </div>
 </template>

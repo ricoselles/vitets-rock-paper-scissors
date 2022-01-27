@@ -2,21 +2,37 @@
   {{ playerId }}<br />
   {{ gameId }}<br />
 
-  <p>Ronde {{ round }}</p>
+  <h3 class="font-semibold text-xl">Ronde {{ round }}</h3>
 
   <pre>{{ progress }}</pre>
 
-  <template v-if="!finish">
-    <Button type="button" @click="play('rock')" :disabled="!playable"
-      >🧗</Button
+  <div class="grid grid-cols-3 gap-8" v-if="!finish">
+    <button
+      v-for="{ icon, shape } of [
+        { icon: '🧗', title: 'rock' },
+        { icon: '🧻', title: 'paper' },
+        { icon: '✂️', title: 'scissors' },
+      ]"
+      type="button"
+      class="
+        p-4
+        flex
+        justify-center
+        align-center
+        rounded-md
+        text-9xl
+        focus:outline-none
+        focus:ring-2
+        focus:ring-offset-2
+        focus:ring-indigo-500
+        disabled:opacity-50 disabled:cursor-not-allowed
+      "
+      @click="play(shape)"
+      :disabled="!playable"
     >
-    <Button type="button" @click="play('paper')" :disabled="!playable"
-      >🧻</Button
-    >
-    <Button type="button" @click="play('scissors')" :disabled="!playable"
-      >✂️</Button
-    >
-  </template>
+      {{ icon }}
+    </button>
+  </div>
   <template v-else>
     <p>You won/lose</p>
     <Button type="button" @click="reset">Reset</Button>
