@@ -10,8 +10,14 @@ export type PlayRoundResponse = {
   }[];
 };
 
+export type PlaySimpleResponse = {
+  winner: string;
+  shape: string;
+  otherShape: string;
+};
+
 export function useClient(
-  baseUrl: string = 'https://apim-netivity-trendwatch-prod-euwe.azure-api.net'
+  baseUrl: string = 'https://apim-netivity-trendwatch-prod-euwe.azure-api.net/rock-paper-scissors'
 ) {
   return {
     getPlayers(): Promise<{ name: string; score: number }[] | null> {
@@ -32,6 +38,13 @@ export function useClient(
 
     registerPlayer(name: string): Promise<{ id: string } | null> {
       return post(baseUrl, '/RegisterPlayer', { name });
+    },
+
+    playSimple(
+      playerName: string,
+      shape: Shape
+    ): Promise<PlaySimpleResponse | null> {
+      return post(baseUrl, '/PlaySimple', { playerName, shape });
     },
   };
 }
